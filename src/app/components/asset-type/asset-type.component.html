@@ -1,0 +1,51 @@
+<div class="asset-type-form">
+    <form [formGroup]="assetTypeForm" (ngSubmit)="assetTypeForm.value.id_asset_type ? updateAssetType() : createAssetType()">
+      <div>
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" type="text">
+      </div>
+      <div>
+        <label for="reference">Reference</label>
+        <input id="reference" formControlName="reference" type="text">
+      </div>
+      <div>
+        <label for="num_tag">Num Tag</label>
+        <input id="num_tag" formControlName="num_tag" type="text">
+      </div>
+      <div>
+        <label for="id_available">Available</label>
+        <input id="id_available" formControlName="id_available" type="number">
+      </div>
+      <button type="submit">{{ assetTypeForm.value.id_asset_type ? 'Update' : 'Create' }}</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  </div>
+  
+  <div class="asset-type-list">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Reference</th>
+          <th>Num Tag</th>
+          <th>Available</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let assetType of assetTypes">
+          <td>{{ assetType.id_asset_type }}</td>
+          <td>{{ assetType.name }}</td>
+          <td>{{ assetType.reference }}</td>
+          <td>{{ assetType.num_tag }}</td>
+          <td>{{ assetType.id_available }}</td>
+          <td>
+            <button (click)="editAssetType(assetType)">Edit</button>
+            <button (click)="deleteAssetType(assetType.id_asset_type)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

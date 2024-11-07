@@ -1,0 +1,69 @@
+<div>
+  <h1>Floors Management</h1>
+
+  <!-- List of Floors -->
+  <div *ngIf="floors.length > 0">
+    <h2>All Floors</h2>
+    <ul>
+      <li *ngFor="let floor of floors">
+        {{ floor.name }} ({{ floor.num_tag }})
+        <button (click)="getFloorById(floor.id_floor)">Details</button>
+        <button (click)="selectFloorForEdit(floor)">Edit</button>
+        <button (click)="deleteFloor(floor.id_floor)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Create Floor -->
+  <div>
+    <h2>Create New Floor</h2>
+    <form (ngSubmit)="createFloor()">
+      <label for="name">Name:</label>
+      <input id="name" [(ngModel)]="newFloor.name" name="name" required />
+
+      <label for="num_tag">Num Tag:</label>
+      <input
+        id="num_tag"
+        [(ngModel)]="newFloor.num_tag"
+        name="num_tag"
+        required
+      />
+
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+  <!-- Edit Floor -->
+  <div *ngIf="editMode && selectedFloor">
+    <h2>Edit Floor</h2>
+    <form (ngSubmit)="updateFloor()">
+      <label for="editName">Name:</label>
+      <input
+        id="editName"
+        [(ngModel)]="selectedFloor.name"
+        name="editName"
+        required
+      />
+
+      <label for="editNumTag">Num Tag:</label>
+      <input
+        id="editNumTag"
+        [(ngModel)]="selectedFloor.num_tag"
+        name="editNumTag"
+        required
+      />
+
+      <button type="submit">Update</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Selected Floor Details -->
+  <div *ngIf="selectedFloor && !editMode">
+    <h2>Floor Details</h2>
+    <p>ID: {{ selectedFloor.id_floor }}</p>
+    <p>Name: {{ selectedFloor.name }}</p>
+    <p>Num Tag: {{ selectedFloor.num_tag }}</p>
+    <p>Available: {{ selectedFloor.id_available }}</p>
+  </div>
+</div>

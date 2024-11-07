@@ -1,0 +1,75 @@
+.registro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5; /* Fondo de la página */
+}
+
+.registro-box {
+  background-color: #333333; /* Fondo del formulario */
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+.registro-title h3 {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.registro-field {
+  margin-bottom: 1rem;
+}
+
+.registro-field label {
+  color: #ffffff;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.inputStyle {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 0.25rem;
+}
+
+.inputStyle::placeholder {
+  color: #aaa;
+}
+
+.registro-button {
+  margin-top: 1.5rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  color: #000000;
+  cursor: pointer;
+  border: none;
+}
+
+.message {
+  margin-top: 1rem;
+  text-align: center;
+  color: #ff0000; /* Color rojo para mensajes de error */
+  font-weight: bold;
+}
+
+.enabled {
+  background-color: #ffffff;
+}
+
+.disabled {
+  background-color: #808080;
+}

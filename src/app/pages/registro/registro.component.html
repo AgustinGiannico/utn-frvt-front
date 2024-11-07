@@ -1,0 +1,44 @@
+<div class="registro-container">
+    <div class="registro-box">
+        <div class="registro-title">
+            <h3>Creá tu cuenta</h3>
+        </div>
+
+        <form [formGroup]="formRegistro" autocomplete="off">
+            <div class="registro-field">
+                <label>Nombre</label>
+                <input class="inputStyle" type="text" formControlName="username" required>
+            </div>
+
+            <div class="registro-field">
+                <label>Apellido</label>
+                <input class="inputStyle" type="text" formControlName="last_name" required>
+            </div>
+
+            <div class="registro-field">
+                <label>Email</label>
+                <input class="inputStyle" type="text" formControlName="email" required>
+            </div>
+
+            <div class="registro-field">
+                <label>Contraseña</label>
+                <input class="inputStyle" type="password" formControlName="password" required>
+            </div>
+
+            <div *ngIf="message" class="alert">
+                {{ message }}
+            </div>
+
+            <div class="registro-button">
+                <button
+                    class="submitButton"
+                    [ngClass]="{'enabled': formRegistro.valid, 'disabled': !formRegistro.valid}"
+                    (click)="enviarDatos()"
+                    [disabled]="!formRegistro.valid">
+                    Crear cuenta
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

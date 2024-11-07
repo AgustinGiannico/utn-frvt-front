@@ -1,0 +1,18 @@
+.asset-type-form {
+    margin-bottom: 20px;
+}
+
+.asset-type-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.asset-type-list th, .asset-type-list td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.asset-type-list th {
+    background-color: #f4f4f4;
+}

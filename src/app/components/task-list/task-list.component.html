@@ -1,0 +1,51 @@
+<div class="task-list-form">
+    <form [formGroup]="taskListForm" (ngSubmit)="taskListForm.value.id_task_list ? updateTaskList() : createTaskList()">
+      <div>
+        <label for="id_asset_type">Asset Type ID</label>
+        <input id="id_asset_type" formControlName="id_asset_type" type="number">
+      </div>
+      <div>
+        <label for="id_task_type">Task Type ID</label>
+        <input id="id_task_type" formControlName="id_task_type" type="number">
+      </div>
+      <div *ngFor="let step of [1,2,3,4,5,6,7,8,9,10]">
+        <label [for]="'step_' + step">Step {{ step }}</label>
+        <input [id]="'step_' + step" [formControlName]="'step_' + step" type="number">
+      </div>
+      <button type="submit">{{ taskListForm.value.id_task_list ? 'Update' : 'Create' }}</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  </div>
+  
+  <div class="task-list">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Asset Type ID</th>
+          <th>Task Type ID</th>
+          <th>Steps</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let taskList of taskLists">
+          <td>{{ taskList.id_task_list }}</td>
+          <td>{{ taskList.id_asset_type }}</td>
+          <td>{{ taskList.id_task_type }}</td>
+          <td>
+            Step 1: {{ taskList.step_1 }}, Step 2: {{ taskList.step_2 }}, 
+            Step 3: {{ taskList.step_3 }}, Step 4: {{ taskList.step_4 }},
+            Step 5: {{ taskList.step_5 }}, Step 6: {{ taskList.step_6 }},
+            Step 7: {{ taskList.step_7 }}, Step 8: {{ taskList.step_8 }},
+            Step 9: {{ taskList.step_9 }}, Step 10: {{ taskList.step_10 }}
+          </td>
+          <td>
+            <button (click)="editTaskList(taskList)">Edit</button>
+            <button (click)="deleteTaskList(taskList.id_task_list)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

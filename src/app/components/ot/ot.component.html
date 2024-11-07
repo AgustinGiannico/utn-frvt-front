@@ -1,0 +1,12 @@
+<div class="gestion-ordenes">
+    
+    <h2>Lista de Órdenes de Trabajo</h2>
+    <ul>
+      <li *ngFor="let ot of ordenes">
+        {{ ot.order_number }} - {{ ot.request_date | date:'shortDate' }} 
+        <button (click)="selectOt(ot)">Editar</button>
+        <button (click)="deleteOt(ot.id_ot)">Eliminar</button>
+      </li>
+    </ul>
+  </div>
+  

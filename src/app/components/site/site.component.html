@@ -1,0 +1,27 @@
+<div>
+    <h2>Sites Management</h2>
+  
+    <!-- Formulario -->
+    <form [formGroup]="siteForm" (ngSubmit)="siteForm.value.id_site ? updateSite() : createSite()">
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" type="text" />
+      </div>
+  
+      <div>
+        <label for="num_tag">Num Tag:</label>
+        <input id="num_tag" formControlName="num_tag" type="text" />
+      </div>
+  
+      <button type="submit">{{ siteForm.value.id_site ? 'Update' : 'Create' }} Site</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  
+    <!-- Listado de sitios -->
+    <div *ngFor="let site of sites">
+      <p>{{ site.name }} ({{ site.num_tag }})</p>
+      <button (click)="editSite(site)">Edit</button>
+      <button (click)="deleteSite(site.id_site)">Delete</button>
+    </div>
+  </div>
+  

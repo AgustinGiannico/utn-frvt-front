@@ -1,0 +1,65 @@
+.task-type-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .task-type-form div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .task-type-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .task-type-form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .task-type-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .task-type-list th, .task-type-list td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .task-type-list th {
+    background-color: #f4f4f4;
+  }
+  
+  .task-type-list tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .task-type-list tbody tr:hover {
+    background-color: #e9e9e9;
+  }
+  
+  button {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  

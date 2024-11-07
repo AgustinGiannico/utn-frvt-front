@@ -1,0 +1,33 @@
+<div class="task-form">
+    <form [formGroup]="taskForm" (ngSubmit)="taskForm.value.id_task ? updateTask() : createTask()">
+      <div>
+        <label for="description">Description</label>
+        <input id="description" formControlName="description" type="text">
+      </div>
+      <button type="submit">{{ taskForm.value.id_task ? 'Update' : 'Create' }}</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  </div>
+  
+  <div class="task-list">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.id_task }}</td>
+          <td>{{ task.description }}</td>
+          <td>
+            <button (click)="editTask(task)">Edit</button>
+            <button (click)="deleteTask(task.id_task)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

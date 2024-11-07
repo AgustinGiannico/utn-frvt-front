@@ -1,0 +1,21 @@
+<h1>Gestión de Órdenes de Trabajo</h1>
+  
+    <form (ngSubmit)="createOrUpdateOt()" *ngIf="selectedOt">
+      <input type="text" placeholder="Número de Orden" [(ngModel)]="selectedOt.order_number" name="order_number" required>
+      <input type="date" placeholder="Fecha de Solicitud" [(ngModel)]="selectedOt.request_date" name="request_date" required>
+      <input type="date" placeholder="Fecha Inicial" [(ngModel)]="selectedOt.initial_date" name="initial_date">
+      <input type="date" placeholder="Fecha de Finalización" [(ngModel)]="selectedOt.completion_date" name="completion_date">
+      <textarea placeholder="Observaciones" [(ngModel)]="selectedOt.observations" name="observations"></textarea>
+      <input type="number" placeholder="ID Usuario" [(ngModel)]="selectedOt.id_user" name="id_user" required>
+      <input type="number" placeholder="ID Lista de Tareas" [(ngModel)]="selectedOt.id_task_list" name="id_task_list" required>
+      <input type="number" placeholder="ID Prioridad" [(ngModel)]="selectedOt.id_priority" name="id_priority" required>
+      <input type="number" placeholder="ID Estado de OT" [(ngModel)]="selectedOt.id_ot_state" name="id_ot_state" required>
+      <input type="number" placeholder="ID Tag" [(ngModel)]="selectedOt.id_tag" name="id_tag" required>
+      <button type="submit">{{ isEditing ? 'Actualizar' : 'Crear' }}</button>
+    </form>
+    
+    <!-- Agrega un botón para crear una nueva OT -->
+    <button (click)="resetForm()">Crear Nueva Orden</button>
+    
+    
+  

@@ -1,0 +1,69 @@
+<div class="tag-form">
+    <form [formGroup]="tagForm" (ngSubmit)="tagForm.value.id_tag ? updateTag() : createTag()">
+      <div>
+        <label for="final_tag">Final Tag</label>
+        <input id="final_tag" formControlName="final_tag" type="text">
+      </div>
+      <div>
+        <label for="asset_number">Asset Number</label>
+        <input id="asset_number" formControlName="asset_number" type="text">
+      </div>
+      <div>
+        <label for="id_edifice">Edifice</label>
+        <input id="id_edifice" formControlName="id_edifice" type="number">
+      </div>
+      <div>
+        <label for="id_floor">Floor</label>
+        <input id="id_floor" formControlName="id_floor" type="number">
+      </div>
+      <div>
+        <label for="id_sector">Sector</label>
+        <input id="id_sector" formControlName="id_sector" type="number">
+      </div>
+      <div>
+        <label for="id_site">Site</label>
+        <input id="id_site" formControlName="id_site" type="number">
+      </div>
+      <div>
+        <label for="id_asset_type">Asset Type</label>
+        <input id="id_asset_type" formControlName="id_asset_type" type="number">
+      </div>
+      <button type="submit">{{ tagForm.value.id_tag ? 'Update' : 'Create' }}</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  </div>
+  
+  <div class="tag-list">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Final Tag</th>
+          <th>Asset Number</th>
+          <th>Edifice</th>
+          <th>Floor</th>
+          <th>Sector</th>
+          <th>Site</th>
+          <th>Asset Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tag of tags">
+          <td>{{ tag.id_tag }}</td>
+          <td>{{ tag.final_tag }}</td>
+          <td>{{ tag.asset_number }}</td>
+          <td>{{ tag.id_edifice }}</td>
+          <td>{{ tag.id_floor }}</td>
+          <td>{{ tag.id_sector }}</td>
+          <td>{{ tag.id_site }}</td>
+          <td>{{ tag.id_asset_type }}</td>
+          <td>
+            <button (click)="editTag(tag)">Edit</button>
+            <button (click)="deleteTag(tag.id_tag)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,0 +1,39 @@
+<div class="task-type-form">
+    <form [formGroup]="taskTypeForm" (ngSubmit)="taskTypeForm.value.id_task_type ? updateTaskType() : createTaskType()">
+      <div>
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" type="text">
+      </div>
+      <div>
+        <label for="code">Code</label>
+        <input id="code" formControlName="code" type="text">
+      </div>
+      <button type="submit">{{ taskTypeForm.value.id_task_type ? 'Update' : 'Create' }}</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  </div>
+  
+  <div class="task-type-list">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let taskType of taskTypes">
+          <td>{{ taskType.id_task_type }}</td>
+          <td>{{ taskType.name }}</td>
+          <td>{{ taskType.code }}</td>
+          <td>
+            <button (click)="editTaskType(taskType)">Edit</button>
+            <button (click)="deleteTaskType(taskType.id_task_type)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

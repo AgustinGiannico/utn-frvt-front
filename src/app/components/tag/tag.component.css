@@ -1,0 +1,65 @@
+.tag-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .tag-form div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .tag-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .tag-form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .tag-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tag-list th, .tag-list td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .tag-list th {
+    background-color: #f4f4f4;
+  }
+  
+  .tag-list tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .tag-list tbody tr:hover {
+    background-color: #e9e9e9;
+  }
+  
+  button {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  

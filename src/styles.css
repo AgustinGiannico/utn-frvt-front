@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* BOTON Y PANEL */
+.mat-mdc-raised-button {
+    border-radius: 0.5rem !important;
+    width: 10rem !important;
+}
+
+.mat-mdc-menu-panel {
+    width: 10rem !important;
+}
+
+
+
+

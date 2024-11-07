@@ -1,0 +1,32 @@
+<div>
+    <h2>Sectors Management</h2>
+  
+    <!-- Formulario -->
+    <form [formGroup]="sectorForm" (ngSubmit)="sectorForm.value.id_sector ? updateSector() : createSector()">
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" type="text" />
+      </div>
+  
+      <div>
+        <label for="num_tag">Num Tag:</label>
+        <input id="num_tag" formControlName="num_tag" type="text" />
+      </div>
+  
+      <div>
+        <label for="id_available">Available ID:</label>
+        <input id="id_available" formControlName="id_available" type="number" />
+      </div>
+  
+      <button type="submit">{{ sectorForm.value.id_sector ? 'Update' : 'Create' }} Sector</button>
+      <button type="button" (click)="clearForm()">Clear</button>
+    </form>
+  
+    <!-- Listado de sectores -->
+    <div *ngFor="let sector of sectors">
+      <p>{{ sector.name }} ({{ sector.num_tag }})</p>
+      <button (click)="editSector(sector)">Edit</button>
+      <button (click)="deleteSector(sector.id_sector)">Delete</button>
+    </div>
+  </div>
+  
