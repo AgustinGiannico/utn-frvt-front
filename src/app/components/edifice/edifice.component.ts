@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EdificeService } from '../../services/edifice.service';
-import { AddressService } from '../../services/address.service';
 import { Edifice } from '../../interfaces/edifice';
-import { Address } from '../../interfaces/address';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-edifice',
@@ -16,14 +13,11 @@ export class EdificeComponent implements OnInit {
   message: string | null = null;
   selectedEdifice: Edifice | null = null;
   showForm: boolean = false;
-  addressCache: { [key: number]: string } = {};  // Cache para direcciones
   edificeForm: FormGroup;
 
   constructor(
     private edificeService: EdificeService,
-    private addressService: AddressService,
-    private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private fb: FormBuilder
   ) {
     this.edificeForm = this.fb.group({
       name: ['', Validators.required],
@@ -37,15 +31,12 @@ export class EdificeComponent implements OnInit {
     this.getAllEdifices();
   }
 
+  // Cargar todos los edificios y utilizar directamente `street` y `number` en lugar de `addressCache`
   getAllEdifices(): void {
     this.edificeService.getAll().subscribe({
       next: (data) => {
         this.edifices = data;
-        data.forEach(edifice => {
-          if (edifice.id_address !== undefined && !this.addressCache[edifice.id_address]) {
-            this.loadAddress(edifice.id_address);
-          }
-        });
+        console.log('Edifices Loaded:', this.edifices); // Verificar que los edificios se cargan correctamente
       },
       error: (error) => {
         this.message = `Error fetching data: ${error}`;
@@ -53,24 +44,7 @@ export class EdificeComponent implements OnInit {
     });
   }
 
-  loadAddress(id: number): void {
-    this.addressService.getById(id).subscribe({
-      next: (address: Address) => {
-        this.addressCache[id] = `${address.street}, ${address.number}`;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error loading address:', err);
-        this.addressCache[id] = 'Unknown Address';
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  getAddress(id: number): string {
-    return this.addressCache[id] ? this.addressCache[id] : 'Unknown Address';
-  }
-
+  // Obtener un edificio específico y cargar sus datos en el formulario
   getEdificeById(id: number): void {
     this.edificeService.getById(id).subscribe({
       next: (edifice: Edifice) => {
@@ -92,7 +66,7 @@ export class EdificeComponent implements OnInit {
 
   openCreateForm(): void {
     this.selectedEdifice = null;  // Reset selected edifice for creating a new one
-    this.edificeForm.reset();      // Reset form fields
+    this.edificeForm.reset();     // Reset form fields
     this.showForm = true;         // Show the form for creating a new Edifice
   }
 

@@ -26,7 +26,6 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskTypeComponent } from './components/task-type/task-type.component';
 import { OtComponent } from './components/ot/ot.component';
 import { CrearOrdenComponent } from './components/crear-orden/crear-orden.component';
-import { AddressFormatPipe } from './pipes/address-format.pipe'
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -47,8 +46,7 @@ import { AddressFormatPipe } from './pipes/address-format.pipe'
     TaskListComponent,
     TaskTypeComponent,
     OtComponent,
-    CrearOrdenComponent,
-    AddressFormatPipe
+    CrearOrdenComponent
   ],
   imports: [
     BrowserModule,

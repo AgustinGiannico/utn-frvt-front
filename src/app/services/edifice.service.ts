@@ -7,6 +7,7 @@ import { API_BASE_URL } from '../app.config';
 @Injectable({
   providedIn: 'root',
 })
+
 export class EdificeService {
   private apiUrl = `${API_BASE_URL}/edifice`;
 
