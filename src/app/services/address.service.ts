@@ -9,9 +9,9 @@ import { API_BASE_URL } from '../app.config';
 })
 
 export class AddressService {
-  private apiUrl = `${API_BASE_URL}/asset-type`;
+  private apiUrl = `${API_BASE_URL}/address`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Address[]> {
     return this.http.get<Address[]>(this.apiUrl, { withCredentials: true });

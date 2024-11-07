@@ -1,21 +1,17 @@
 <div class="edifice-container">
-  <!-- Título principal -->
   <h1 class="title">Edificios</h1>
 
-  <!-- Mensaje de error o éxito -->
   <div *ngIf="message" class="message">
     {{ message }}
   </div>
 
-  <!-- Sección de la lista de edificios -->
   <div class="section-title">Lista de Edificios</div>
   <ul class="edifice-list">
     <li *ngFor="let edifice of edifices" class="edifice-item">
       <div class="edifice-info">
         <strong>{{ edifice.name }}</strong>
-        <div>{{ edifice.id_address | addressFormat }}</div>
+        <div>{{ edifice.street }}, {{ edifice.number }}</div> <!-- Mostrar directamente street y number -->
       </div>
-      <!-- Botones de edición y eliminación -->
       <div>
         <button class="edit-button" (click)="getEdificeById(edifice.id_edifice)">Editar</button>
         <button class="delete-button" (click)="deleteEdifice(edifice.id_edifice)">Eliminar</button>
@@ -23,12 +19,10 @@
     </li>
   </ul>
 
-  <!-- Botón para abrir el formulario de creación -->
   <div class="create-button-container">
     <button class="create-button" (click)="openCreateForm()">Crear Nuevo Edificio</button>
   </div>
 
-  <!-- Formulario para crear o editar un edificio -->
   <div *ngIf="showForm" class="form-container">
     <h2 class="form-title">{{ selectedEdifice ? 'Editar Edificio' : 'Crear Nuevo Edificio' }}</h2>
 
