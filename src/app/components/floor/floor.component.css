@@ -1,0 +1,120 @@
+.floor-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.title, .section-title {
+    color: #333;
+    text-align: center;
+}
+
+.floor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.floor-table th, .floor-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.floor-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.floor-row:hover {
+    background-color: #f9f9f9;
+}
+
+/* Botones */
+button {
+    cursor: pointer;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+.details-button {
+    background-color: #008CBA;
+    color: white;
+}
+
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.create-button {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.create-button:hover {
+    background-color: #005f6b;
+}
+
+.create-button-container, .form-buttons {
+    text-align: center;
+}
+
+.create-button, .submit-button, .clear-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.clear-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.details-container, .form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.form-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 1rem;
+    color: #444;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

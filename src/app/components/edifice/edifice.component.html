@@ -6,18 +6,30 @@
   </div>
 
   <div class="section-title">Lista de Edificios</div>
-  <ul class="edifice-list">
-    <li *ngFor="let edifice of edifices" class="edifice-item">
-      <div class="edifice-info">
-        <strong>{{ edifice.name }}</strong>
-        <div>{{ edifice.street }}, {{ edifice.number }}</div> <!-- Mostrar directamente street y number -->
-      </div>
-      <div>
-        <button class="edit-button" (click)="getEdificeById(edifice.id_edifice)">Editar</button>
-        <button class="delete-button" (click)="deleteEdifice(edifice.id_edifice)">Eliminar</button>
-      </div>
-    </li>
-  </ul>
+
+  <table class="edifice-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Ubicación</th>
+        <th>Disponibilidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let edifice of edifices" class="edifice-row">
+        <td>{{ edifice.name }}</td>
+        <td>{{ edifice.street }}, {{ edifice.number }}</td>
+        <td>{{ edifice.location }}, {{ edifice.province }}</td>
+        <td>{{ edifice.available }}</td>
+        <td>
+          <button class="edit-button" (click)="getEdificeById(edifice.id_edifice)">Editar</button>
+          <button class="delete-button" (click)="deleteEdifice(edifice.id_edifice)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
   <div class="create-button-container">
     <button class="create-button" (click)="openCreateForm()">Crear Nuevo Edificio</button>
@@ -36,16 +48,28 @@
         <input id="num_tag" formControlName="num_tag" class="form-input" />
       </div>
       <div class="form-group">
-        <label for="id_address">Dirección</label>
-        <input id="id_address" formControlName="id_address" class="form-input" />
+        <label for="street">Calle</label>
+        <input id="street" formControlName="street" class="form-input" />
       </div>
       <div class="form-group">
-        <label for="id_available">Disponibilidad</label>
+        <label for="number">Número</label>
+        <input id="number" formControlName="number" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_location">Ubicación (ID)</label>
+        <input id="id_location" formControlName="id_location" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_province">Provincia (ID)</label>
+        <input id="id_province" formControlName="id_province" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_available">Disponibilidad (ID)</label>
         <input id="id_available" formControlName="id_available" class="form-input" />
       </div>
 
       <div class="form-buttons">
-        <button type="submit" class="submit-button" [disabled]="!edificeForm.valid">Guardar</button>
+        <button type="submit" class="submit-button" [disabled]="!edificeForm.valid">Crear</button>
         <button type="button" class="clear-button" (click)="clearForm()">Cancelar</button>
       </div>
     </form>

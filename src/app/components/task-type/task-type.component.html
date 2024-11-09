@@ -1,39 +1,57 @@
-<div class="task-type-form">
-    <form [formGroup]="taskTypeForm" (ngSubmit)="taskTypeForm.value.id_task_type ? updateTaskType() : createTaskType()">
-      <div>
-        <label for="name">Name</label>
-        <input id="name" formControlName="name" type="text">
+<div class="task-type-container">
+  <h1 class="title">Gestión de Tipos de Tareas</h1>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <div class="section-title">Lista de Tipos de Tareas</div>
+
+  <table class="task-type-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let taskType of paginatedTaskTypes" class="task-type-row">
+        <td>{{ taskType.id_task_type }}</td>
+        <td>{{ taskType.name }}</td>
+        <td>{{ taskType.code }}</td>
+        <td>
+          <button class="edit-button" (click)="editTaskType(taskType)">Editar</button>
+          <button class="delete-button" (click)="deleteTaskType(taskType.id_task_type)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">&lt; Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente &gt;</button>
+  </div>
+
+  <div class="create-button-container">
+    <button class="create-button" (click)="openCreateForm()">Crear Nuevo Tipo de Tarea</button>
+  </div>
+
+  <div *ngIf="showForm" class="form-container">
+    <h2 class="form-title">{{ selectedTaskType ? 'Editar Tipo de Tarea' : 'Crear Nuevo Tipo de Tarea' }}</h2>
+    <form [formGroup]="taskTypeForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input id="name" formControlName="name" type="text" class="form-input" />
       </div>
-      <div>
-        <label for="code">Code</label>
-        <input id="code" formControlName="code" type="text">
+      <div class="form-group">
+        <label for="code">Código</label>
+        <input id="code" formControlName="code" type="text" class="form-input" />
       </div>
-      <button type="submit">{{ taskTypeForm.value.id_task_type ? 'Update' : 'Create' }}</button>
-      <button type="button" (click)="clearForm()">Clear</button>
+      <div class="form-buttons">
+        <button type="submit" class="submit-button">{{ selectedTaskType ? 'Actualizar' : 'Crear' }}</button>
+        <button type="button" class="clear-button" (click)="clearForm()">Cancelar</button>
+      </div>
     </form>
   </div>
-  
-  <div class="task-type-list">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let taskType of taskTypes">
-          <td>{{ taskType.id_task_type }}</td>
-          <td>{{ taskType.name }}</td>
-          <td>{{ taskType.code }}</td>
-          <td>
-            <button (click)="editTaskType(taskType)">Edit</button>
-            <button (click)="deleteTaskType(taskType.id_task_type)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+</div>

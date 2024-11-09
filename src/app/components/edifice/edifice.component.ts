@@ -22,7 +22,10 @@ export class EdificeComponent implements OnInit {
     this.edificeForm = this.fb.group({
       name: ['', Validators.required],
       num_tag: ['', Validators.required],
-      id_address: ['', Validators.required],
+      street: ['', Validators.required],
+      number: ['', Validators.required],
+      id_location: ['', Validators.required],
+      id_province: ['', Validators.required],
       id_available: ['', Validators.required]
     });
   }
@@ -31,7 +34,7 @@ export class EdificeComponent implements OnInit {
     this.getAllEdifices();
   }
 
-  // Cargar todos los edificios y utilizar directamente `street` y `number` en lugar de `addressCache`
+  // Cargar todos los edificios
   getAllEdifices(): void {
     this.edificeService.getAll().subscribe({
       next: (data) => {
@@ -52,7 +55,10 @@ export class EdificeComponent implements OnInit {
         this.edificeForm.patchValue({
           name: edifice.name,
           num_tag: edifice.num_tag,
-          id_address: edifice.id_address,
+          street: edifice.street,
+          number: edifice.number,
+          id_location: edifice.id_location,
+          id_province: edifice.id_province,
           id_available: edifice.id_available
         });
         this.showForm = true;

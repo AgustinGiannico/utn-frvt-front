@@ -1,33 +1,51 @@
-<div class="task-form">
-    <form [formGroup]="taskForm" (ngSubmit)="taskForm.value.id_task ? updateTask() : createTask()">
-      <div>
-        <label for="description">Description</label>
-        <input id="description" formControlName="description" type="text">
+<div class="task-container">
+  <h1 class="title">Gestión de Tareas</h1>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <div class="section-title">Lista de Tareas</div>
+
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of paginatedTasks" class="task-row">
+        <td>{{ task.id_task }}</td>
+        <td>{{ task.description }}</td>
+        <td>
+          <button class="edit-button" (click)="editTask(task)">Editar</button>
+          <button class="delete-button" (click)="deleteTask(task.id_task)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">&lt; Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente &gt;</button>
+  </div>
+
+  <div class="create-button-container">
+    <button class="create-button" (click)="openCreateForm()">Crear Nueva Tarea</button>
+  </div>
+
+  <div *ngIf="showForm" class="form-container">
+    <h2 class="form-title">{{ selectedTask ? 'Editar Tarea' : 'Crear Nueva Tarea' }}</h2>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <input id="description" formControlName="description" type="text" class="form-input" />
       </div>
-      <button type="submit">{{ taskForm.value.id_task ? 'Update' : 'Create' }}</button>
-      <button type="button" (click)="clearForm()">Clear</button>
+      <div class="form-buttons">
+        <button type="submit" class="submit-button">{{ selectedTask ? 'Actualizar' : 'Crear' }}</button>
+        <button type="button" class="clear-button" (click)="clearForm()">Cancelar</button>
+      </div>
     </form>
   </div>
-  
-  <div class="task-list">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Description</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let task of tasks">
-          <td>{{ task.id_task }}</td>
-          <td>{{ task.description }}</td>
-          <td>
-            <button (click)="editTask(task)">Edit</button>
-            <button (click)="deleteTask(task.id_task)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+</div>

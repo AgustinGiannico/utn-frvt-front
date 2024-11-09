@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; 
 import { FloorService } from '../../services/floor.service';
 import { Floor } from '../../interfaces/floor';
 
@@ -10,13 +10,10 @@ import { Floor } from '../../interfaces/floor';
 export class FloorComponent implements OnInit {
   floors: Floor[] = [];
   selectedFloor: Floor | null = null;
-  newFloor: Floor = {
-    id_floor: 0,
-    name: '',
-    num_tag: '',
-    id_available: 1
-  };
+  floorForm: Floor = { id_floor: 0, name: '', num_tag: '', id_available: 1, available: '' };
   editMode: boolean = false;
+  creatingFloor: boolean = false;
+  message: string | null = null;
 
   constructor(private floorService: FloorService) {}
 
@@ -27,54 +24,70 @@ export class FloorComponent implements OnInit {
   getAllFloors(): void {
     this.floorService.getAll().subscribe({
       next: (data) => this.floors = data,
-      error: (error) => console.error('Error fetching floors:', error)
+      error: () => this.message = 'Error al cargar los pisos.'
     });
   }
 
   getFloorById(id: number): void {
     this.floorService.getById(id).subscribe({
-      next: (data) => this.selectedFloor = data,
-      error: (error) => console.error(`Error fetching floor with ID ${id}:`, error)
+      next: (data) => {
+        this.selectedFloor = data;
+        this.editMode = false;
+      },
+      error: () => this.message = `Error al obtener el piso con ID ${id}.`
     });
   }
 
   createFloor(): void {
-    this.floorService.create(this.newFloor).subscribe({
+    this.floorService.create(this.floorForm).subscribe({
       next: (data) => {
         this.floors.push(data);
-        this.newFloor = { id_floor: 0, name: '', num_tag: '', id_available: 1 };
+        this.clearForm();
+        this.message = 'Piso creado exitosamente.';
       },
-      error: (error) => console.error('Error creating floor:', error)
+      error: () => this.message = 'Error al crear el piso.'
     });
   }
 
   updateFloor(): void {
     if (this.selectedFloor) {
-      this.floorService.update(this.selectedFloor.id_floor, this.selectedFloor).subscribe({
+      this.floorService.update(this.selectedFloor.id_floor, this.floorForm).subscribe({
         next: (data) => {
           this.floors = this.floors.map(f => f.id_floor === data.id_floor ? data : f);
-          this.editMode = false;
-          this.selectedFloor = null;
+          this.clearForm();
+          this.message = 'Piso actualizado exitosamente.';
         },
-        error: (error) => console.error('Error updating floor:', error)
+        error: () => this.message = 'Error al actualizar el piso.'
       });
     }
   }
 
   deleteFloor(id: number): void {
     this.floorService.delete(id).subscribe({
-      next: () => this.floors = this.floors.filter(f => f.id_floor !== id),
-      error: (error) => console.error(`Error deleting floor with ID ${id}:`, error)
+      next: () => {
+        this.floors = this.floors.filter(f => f.id_floor !== id);
+        this.message = 'Piso eliminado exitosamente.';
+      },
+      error: () => this.message = `Error al eliminar el piso con ID ${id}.`
     });
   }
 
   selectFloorForEdit(floor: Floor): void {
     this.selectedFloor = { ...floor };
+    this.floorForm = { ...floor };
     this.editMode = true;
   }
 
-  cancelEdit(): void {
+  clearForm(): void {
     this.selectedFloor = null;
+    this.floorForm = { id_floor: 0, name: '', num_tag: '', id_available: 1, available: '' };
     this.editMode = false;
+    this.creatingFloor = false;
   }
+
+  openCreateForm(): void {
+    this.clearForm();
+    this.creatingFloor = true;
+  }
+  
 }

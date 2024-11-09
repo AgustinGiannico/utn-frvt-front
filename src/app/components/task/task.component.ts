@@ -10,7 +10,16 @@ import { Task } from '../../interfaces/task';
 })
 export class TaskComponent implements OnInit {
   tasks: Task[] = [];
+  paginatedTasks: Task[] = [];
   taskForm: FormGroup;
+  selectedTask: Task | null = null;
+  message: string | null = null;
+  showForm: boolean = false;
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalPages: number = 1;
 
   constructor(private taskService: TaskService, private fb: FormBuilder) {
     this.taskForm = this.fb.group({
@@ -25,57 +34,105 @@ export class TaskComponent implements OnInit {
 
   getAllTasks(): void {
     this.taskService.getAll().subscribe({
-      next: (tasks) => this.tasks = tasks,
-      error: (err) => console.error('Error fetching tasks:', err)
+      next: (tasks) => {
+        this.tasks = tasks;
+        this.updatePagination();
+      },
+      error: () => {
+        this.message = 'Error al cargar las tareas';
+      }
     });
   }
 
-  getTaskById(id: number): void {
-    this.taskService.getById(id).subscribe({
-      next: (task) => this.taskForm.patchValue(task),
-      error: (err) => console.error('Error fetching task:', err)
-    });
+  // Paginación
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.tasks.length / this.itemsPerPage);
+    this.updatePaginatedTasks();
   }
 
-  createTask(): void {
-    if (this.taskForm.valid) {
-      this.taskService.create(this.taskForm.value).subscribe({
-        next: (newTask) => {
-          this.tasks.push(newTask);
-          this.taskForm.reset();
-        },
-        error: (err) => console.error('Error creating task:', err)
-      });
+  updatePaginatedTasks(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedTasks = this.tasks.slice(start, end);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedTasks();
     }
   }
 
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedTasks();
+    }
+  }
+
+  openCreateForm(): void {
+    this.selectedTask = null;
+    this.taskForm.reset();
+    this.showForm = true;
+    this.message = null;
+  }
+
+  clearForm(): void {
+    this.taskForm.reset();
+    this.selectedTask = null;
+    this.showForm = false;
+    this.message = null;
+  }
+
+  onSubmit(): void {
+    if (this.taskForm.valid) {
+      this.selectedTask ? this.updateTask() : this.createTask();
+    }
+  }
+
+  createTask(): void {
+    this.taskService.create(this.taskForm.value).subscribe({
+      next: (newTask) => {
+        this.tasks.push(newTask);
+        this.message = 'Tarea creada exitosamente';
+        this.updatePagination();
+        this.clearForm();
+      },
+      error: () => this.message = 'Error al crear la tarea'
+    });
+  }
+
   updateTask(): void {
-    if (this.taskForm.valid && this.taskForm.value.id_task) {
-      this.taskService.update(this.taskForm.value.id_task, this.taskForm.value).subscribe({
+    if (this.selectedTask) {
+      this.taskService.update(this.selectedTask.id_task, this.taskForm.value).subscribe({
         next: (updatedTask) => {
           const index = this.tasks.findIndex(task => task.id_task === updatedTask.id_task);
           if (index !== -1) {
             this.tasks[index] = updatedTask;
           }
-          this.taskForm.reset();
+          this.message = 'Tarea actualizada exitosamente';
+          this.updatePagination();
+          this.clearForm();
         },
-        error: (err) => console.error('Error updating task:', err)
+        error: () => this.message = 'Error al actualizar la tarea'
       });
     }
   }
 
   deleteTask(id: number): void {
     this.taskService.delete(id).subscribe({
-      next: () => this.tasks = this.tasks.filter(task => task.id_task !== id),
-      error: (err) => console.error('Error deleting task:', err)
+      next: () => {
+        this.tasks = this.tasks.filter(task => task.id_task !== id);
+        this.message = 'Tarea eliminada exitosamente';
+        this.updatePagination();
+      },
+      error: () => this.message = 'Error al eliminar la tarea'
     });
   }
 
-  clearForm(): void {
-    this.taskForm.reset();
-  }
-
   editTask(task: Task): void {
+    this.selectedTask = task;
     this.taskForm.patchValue(task);
+    this.showForm = true;
   }
 }

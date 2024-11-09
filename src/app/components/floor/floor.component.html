@@ -1,69 +1,60 @@
-<div>
-  <h1>Floors Management</h1>
+<div class="floor-container">
+  <h1 class="title">Gestión de Pisos</h1>
 
-  <!-- List of Floors -->
-  <div *ngIf="floors.length > 0">
-    <h2>All Floors</h2>
-    <ul>
-      <li *ngFor="let floor of floors">
-        {{ floor.name }} ({{ floor.num_tag }})
-        <button (click)="getFloorById(floor.id_floor)">Details</button>
-        <button (click)="selectFloorForEdit(floor)">Edit</button>
-        <button (click)="deleteFloor(floor.id_floor)">Delete</button>
-      </li>
-    </ul>
-  </div>
+  <div *ngIf="message" class="message">{{ message }}</div>
 
-  <!-- Create Floor -->
-  <div>
-    <h2>Create New Floor</h2>
-    <form (ngSubmit)="createFloor()">
-      <label for="name">Name:</label>
-      <input id="name" [(ngModel)]="newFloor.name" name="name" required />
+  <div class="section-title">Lista de Pisos</div>
 
-      <label for="num_tag">Num Tag:</label>
-      <input
-        id="num_tag"
-        [(ngModel)]="newFloor.num_tag"
-        name="num_tag"
-        required
-      />
+  <table class="floor-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Número de Tag</th>
+        <th>Disponibilidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let floor of floors" class="floor-row">
+        <td>{{ floor.name }}</td>
+        <td>{{ floor.num_tag }}</td>
+        <td>{{ floor.available }}</td>
+        <td>
+          <button class="details-button" (click)="getFloorById(floor.id_floor)">Detalles</button>
+          <button class="edit-button" (click)="selectFloorForEdit(floor)">Editar</button>
+          <button class="delete-button" (click)="deleteFloor(floor.id_floor)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-      <button type="submit">Create</button>
+  <div class="create-button-container">
+    <button class="create-button" (click)="openCreateForm()">Crear Nuevo Piso</button>
+  </div>  
+
+  <div *ngIf="creatingFloor || editMode" class="form-container">
+    <h2 class="form-title">{{ editMode ? 'Editar Piso' : 'Crear Nuevo Piso' }}</h2>
+    <form (ngSubmit)="editMode ? updateFloor() : createFloor()">
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input id="name" [(ngModel)]="floorForm.name" name="name" required class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="num_tag">Número de Tag</label>
+        <input id="num_tag" [(ngModel)]="floorForm.num_tag" name="num_tag" required class="form-input" />
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="submit-button">{{ editMode ? 'Actualizar' : 'Crear' }}</button>
+        <button type="button" class="clear-button" (click)="clearForm()">Cancelar</button>
+      </div>
     </form>
   </div>
 
-  <!-- Edit Floor -->
-  <div *ngIf="editMode && selectedFloor">
-    <h2>Edit Floor</h2>
-    <form (ngSubmit)="updateFloor()">
-      <label for="editName">Name:</label>
-      <input
-        id="editName"
-        [(ngModel)]="selectedFloor.name"
-        name="editName"
-        required
-      />
-
-      <label for="editNumTag">Num Tag:</label>
-      <input
-        id="editNumTag"
-        [(ngModel)]="selectedFloor.num_tag"
-        name="editNumTag"
-        required
-      />
-
-      <button type="submit">Update</button>
-      <button type="button" (click)="cancelEdit()">Cancel</button>
-    </form>
-  </div>
-
-  <!-- Selected Floor Details -->
-  <div *ngIf="selectedFloor && !editMode">
-    <h2>Floor Details</h2>
-    <p>ID: {{ selectedFloor.id_floor }}</p>
-    <p>Name: {{ selectedFloor.name }}</p>
-    <p>Num Tag: {{ selectedFloor.num_tag }}</p>
-    <p>Available: {{ selectedFloor.id_available }}</p>
+  <div *ngIf="selectedFloor && !editMode" class="details-container">
+    <h2 class="form-title">Detalles del Piso</h2>
+    <p><strong>ID:</strong> {{ selectedFloor.id_floor }}</p>
+    <p><strong>Nombre:</strong> {{ selectedFloor.name }}</p>
+    <p><strong>Número de Tag:</strong> {{ selectedFloor.num_tag }}</p>
+    <p><strong>Disponibilidad:</strong> {{ selectedFloor.available }}</p>
   </div>
 </div>

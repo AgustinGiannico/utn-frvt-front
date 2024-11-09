@@ -24,6 +24,7 @@ export class RegistroComponent {
       last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
+      admin: [0, Validators.required] // Inicializa admin con 0 (Operario por defecto)
     });
   }
 

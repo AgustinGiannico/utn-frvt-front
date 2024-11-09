@@ -1,12 +1,99 @@
-<div class="gestion-ordenes">
-    
-    <h2>Lista de Órdenes de Trabajo</h2>
-    <ul>
-      <li *ngFor="let ot of ordenes">
-        {{ ot.order_number }} - {{ ot.request_date | date:'shortDate' }} 
-        <button (click)="selectOt(ot)">Editar</button>
-        <button (click)="deleteOt(ot.id_ot)">Eliminar</button>
-      </li>
-    </ul>
+<div class="ot-container">
+  <h1 class="title">Gestión de Órdenes de Trabajo (OT)</h1>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <div class="section-title">Lista de Órdenes de Trabajo</div>
+
+  <table class="ot-table">
+    <thead>
+      <tr>
+        <th>Número de Orden</th>
+        <th>Fecha de Solicitud</th>
+        <th>Fecha de Inicio</th>
+        <th>Fecha de Finalización</th>
+        <th>Observaciones</th>
+        <th>Usuario</th>
+        <th>Lista de Tareas</th>
+        <th>Prioridad</th>
+        <th>Estado de la OT</th>
+        <th>Tag</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ot of paginatedOts" class="ot-row">
+        <td>{{ ot.order_number }}</td>
+        <td>{{ ot.request_date | date }}</td>
+        <td>{{ ot.initial_date | date }}</td>
+        <td>{{ ot.completion_date | date }}</td>
+        <td>{{ ot.observations }}</td>
+        <td>{{ ot.username || '-' }}</td>
+        <td>{{ ot.task_list_steps || '-' }}</td>
+        <td>{{ ot.priority || '-' }}</td>
+        <td>{{ ot.ot_state || '-' }}</td>
+        <td>{{ ot.final_tag || '-' }}</td>
+        <td>
+          <button class="edit-button" (click)="editOt(ot)">Editar</button>
+          <button class="delete-button" (click)="deleteOt(ot.id_ot)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">&lt; Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente &gt;</button>
   </div>
-  
+
+  <div *ngIf="selectedOt || showForm" class="form-container">
+    <h2 class="form-title">{{ selectedOt ? 'Editar OT' : 'Crear Nueva OT' }}</h2>
+    <form [formGroup]="otForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="order_number">Número de Orden</label>
+        <input id="order_number" formControlName="order_number" type="text" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="request_date">Fecha de Solicitud</label>
+        <input id="request_date" formControlName="request_date" type="date" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="initial_date">Fecha de Inicio</label>
+        <input id="initial_date" formControlName="initial_date" type="date" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="completion_date">Fecha de Finalización</label>
+        <input id="completion_date" formControlName="completion_date" type="date" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="observations">Observaciones</label>
+        <input id="observations" formControlName="observations" type="text" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_user">Usuario</label>
+        <input id="id_user" formControlName="id_user" type="number" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_task_list">Lista de Tareas</label>
+        <input id="id_task_list" formControlName="id_task_list" type="number" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_priority">Prioridad</label>
+        <input id="id_priority" formControlName="id_priority" type="number" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_ot_state">Estado de la OT</label>
+        <input id="id_ot_state" formControlName="id_ot_state" type="number" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label for="id_tag">Tag</label>
+        <input id="id_tag" formControlName="id_tag" type="number" class="form-input" />
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="submit-button">{{ selectedOt ? 'Actualizar' : 'Crear' }}</button>
+        <button type="button" class="clear-button" (click)="clearForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
