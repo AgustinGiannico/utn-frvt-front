@@ -1,51 +1,70 @@
-<div class="asset-type-form">
-    <form [formGroup]="assetTypeForm" (ngSubmit)="assetTypeForm.value.id_asset_type ? updateAssetType() : createAssetType()">
-      <div>
-        <label for="name">Name</label>
-        <input id="name" formControlName="name" type="text">
+<div class="asset-type-container">
+  <h1 class="title">Gestión de Tipos de Activo</h1>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <div class="section-title">Lista de Tipos de Activo</div>
+
+  <table class="asset-type-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Referencia</th>
+        <th>Número de Tag</th>
+        <th>Disponibilidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let assetType of paginatedAssetTypes" class="asset-type-row">
+        <td>{{ assetType.name }}</td>
+        <td>{{ assetType.reference }}</td>
+        <td>{{ assetType.num_tag }}</td>
+        <td>{{ assetType.available }}</td>
+        <td>
+          <button class="edit-button" (click)="editAssetType(assetType)">Editar</button>
+          <button class="delete-button" (click)="deleteAssetType(assetType.id_asset_type)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">&lt; Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente &gt;</button>
+  </div>
+
+  <div class="create-button-container">
+    <button class="create-button" (click)="openCreateForm()">Crear Nuevo Tipo de Activo</button>
+  </div>
+
+  <div *ngIf="showForm" class="form-container">
+    <h2 class="form-title">{{ selectedAssetType ? 'Editar Tipo de Activo' : 'Crear Nuevo Tipo de Activo' }}</h2>
+
+    <form [formGroup]="assetTypeForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input id="name" formControlName="name" class="form-input" />
       </div>
-      <div>
-        <label for="reference">Reference</label>
-        <input id="reference" formControlName="reference" type="text">
+      <div class="form-group">
+        <label for="reference">Referencia</label>
+        <input id="reference" formControlName="reference" class="form-input" />
       </div>
-      <div>
-        <label for="num_tag">Num Tag</label>
-        <input id="num_tag" formControlName="num_tag" type="text">
+      <div class="form-group">
+        <label for="num_tag">Número de Tag</label>
+        <input id="num_tag" formControlName="num_tag" class="form-input" />
       </div>
-      <div>
-        <label for="id_available">Available</label>
-        <input id="id_available" formControlName="id_available" type="number">
+      <div class="form-group">
+        <label for="id_available">ID Disponibilidad</label>
+        <input id="id_available" formControlName="id_available" type="number" class="form-input" />
       </div>
-      <button type="submit">{{ assetTypeForm.value.id_asset_type ? 'Update' : 'Create' }}</button>
-      <button type="button" (click)="clearForm()">Clear</button>
+
+      <div class="form-buttons">
+        <button type="submit" class="submit-button">{{ selectedAssetType ? 'Actualizar' : 'Crear' }}</button>
+        <button type="button" class="clear-button" (click)="clearForm()">Cancelar</button>
+      </div>
     </form>
   </div>
-  
-  <div class="asset-type-list">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Reference</th>
-          <th>Num Tag</th>
-          <th>Available</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let assetType of assetTypes">
-          <td>{{ assetType.id_asset_type }}</td>
-          <td>{{ assetType.name }}</td>
-          <td>{{ assetType.reference }}</td>
-          <td>{{ assetType.num_tag }}</td>
-          <td>{{ assetType.id_available }}</td>
-          <td>
-            <button (click)="editAssetType(assetType)">Edit</button>
-            <button (click)="deleteAssetType(assetType.id_asset_type)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+</div>

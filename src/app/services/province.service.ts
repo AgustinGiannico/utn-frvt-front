@@ -8,8 +8,8 @@ import { API_BASE_URL } from '../app.config';
   providedIn: 'root',
 })
 
-export class PriorityService {
-  private apiUrl = `${API_BASE_URL}/priority`;
+export class ProvinceService {
+  private apiUrl = `${API_BASE_URL}/province`;
 
   constructor(private http: HttpClient) {}
 

@@ -10,12 +10,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class SiteComponent implements OnInit {
   sites: Site[] = [];
+  message: string | null = null;
   selectedSite: Site | null = null;
+  showForm: boolean = false;
   siteForm: FormGroup;
 
-  constructor(private siteService: SiteService, private formBuilder: FormBuilder) {
-    this.siteForm = this.formBuilder.group({
-      id_site: [null],
+  constructor(private siteService: SiteService, private fb: FormBuilder) {
+    this.siteForm = this.fb.group({
       name: ['', Validators.required],
       num_tag: ['', Validators.required]
     });
@@ -27,41 +28,73 @@ export class SiteComponent implements OnInit {
 
   getAllSites(): void {
     this.siteService.getAll().subscribe({
-      next: (data) => this.sites = data,
-      error: (err) => console.error('Error fetching sites:', err)
+      next: (data) => {
+        this.sites = data;
+      },
+      error: (err) => {
+        this.message = 'Error al cargar los sitios';
+      }
     });
   }
 
   getSiteById(id: number): void {
     this.siteService.getById(id).subscribe({
-      next: (data) => this.selectedSite = data,
-      error: (err) => console.error('Error fetching site by ID:', err)
+      next: (site: Site) => {
+        this.selectedSite = site;
+        this.siteForm.patchValue({
+          name: site.name,
+          num_tag: site.num_tag
+        });
+        this.showForm = true;
+      },
+      error: (err) => {
+        this.message = 'Error al cargar el sitio';
+      }
     });
   }
 
-  createSite(): void {
+  openCreateForm(): void {
+    this.selectedSite = null;
+    this.siteForm.reset();
+    this.showForm = true;
+  }
+
+  clearForm(): void {
+    this.siteForm.reset();
+    this.selectedSite = null;
+    this.showForm = false;
+  }
+
+  onSubmit(): void {
     if (this.siteForm.valid) {
-      this.siteService.create(this.siteForm.value).subscribe({
-        next: (newSite) => {
-          this.sites.push(newSite);
-          this.siteForm.reset();
-        },
-        error: (err) => console.error('Error creating site:', err)
-      });
+      this.selectedSite ? this.updateSite() : this.createSite();
     }
   }
 
+  createSite(): void {
+    this.siteService.create(this.siteForm.value).subscribe({
+      next: () => {
+        this.message = 'Sitio creado correctamente';
+        this.getAllSites();
+        this.clearForm();
+      },
+      error: (err) => {
+        this.message = 'Error al crear el sitio';
+      }
+    });
+  }
+
   updateSite(): void {
-    if (this.siteForm.valid && this.siteForm.value.id_site) {
-      this.siteService.update(this.siteForm.value.id_site, this.siteForm.value).subscribe({
-        next: (updatedSite) => {
-          const index = this.sites.findIndex(site => site.id_site === updatedSite.id_site);
-          if (index !== -1) {
-            this.sites[index] = updatedSite;
-          }
-          this.siteForm.reset();
+    if (this.selectedSite) {
+      this.siteService.update(this.selectedSite.id_site, this.siteForm.value).subscribe({
+        next: () => {
+          this.message = 'Sitio actualizado correctamente';
+          this.getAllSites();
+          this.clearForm();
         },
-        error: (err) => console.error('Error updating site:', err)
+        error: (err) => {
+          this.message = 'Error al actualizar el sitio';
+        }
       });
     }
   }
@@ -69,18 +102,12 @@ export class SiteComponent implements OnInit {
   deleteSite(id: number): void {
     this.siteService.delete(id).subscribe({
       next: () => {
-        this.sites = this.sites.filter(site => site.id_site !== id);
+        this.message = 'Sitio eliminado correctamente';
+        this.getAllSites();
       },
-      error: (err) => console.error('Error deleting site:', err)
+      error: (err) => {
+        this.message = 'Error al eliminar el sitio';
+      }
     });
-  }
-
-  editSite(site: Site): void {
-    this.siteForm.patchValue(site);
-  }
-
-  clearForm(): void {
-    this.siteForm.reset();
-    this.selectedSite = null;
   }
 }

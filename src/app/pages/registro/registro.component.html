@@ -1,7 +1,7 @@
 <div class="registro-container">
     <div class="registro-box">
         <div class="registro-title">
-            <h3>Creá tu cuenta</h3>
+            <h3>Registrar usuario</h3>
         </div>
 
         <form [formGroup]="formRegistro" autocomplete="off">
@@ -25,7 +25,16 @@
                 <input class="inputStyle" type="password" formControlName="password" required>
             </div>
 
-            <div *ngIf="message" class="alert">
+            <!-- Campo de selección de rol -->
+            <div class="registro-field">
+                <label>Rol</label>
+                <select class="inputStyle" formControlName="admin">
+                    <option [value]="1">Administrador</option>
+                    <option [value]="0">Operario</option>
+                </select>
+            </div>
+
+            <div *ngIf="message" class="message">
                 {{ message }}
             </div>
 
@@ -41,4 +50,3 @@
         </form>
     </div>
 </div>
-

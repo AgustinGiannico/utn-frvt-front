@@ -10,9 +10,18 @@ import { Tag } from '../../interfaces/tag';
 })
 export class TagComponent implements OnInit {
   tags: Tag[] = [];
+  paginatedTags: Tag[] = [];
   tagForm: FormGroup;
+  selectedTag: Tag | null = null;
+  message: string | null = null;
+  showForm: boolean = false; // Agregado para controlar la visibilidad del formulario
 
-  constructor(private tagService: TagService,private fb: FormBuilder) {
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalPages: number = 1;
+
+  constructor(private tagService: TagService, private fb: FormBuilder) {
     this.tagForm = this.fb.group({
       id_tag: [null],
       final_tag: ['', Validators.required],
@@ -31,57 +40,105 @@ export class TagComponent implements OnInit {
 
   getAllTags(): void {
     this.tagService.getAll().subscribe({
-      next: (tags) => this.tags = tags,
-      error: (err) => console.error('Error fetching tags:', err)
+      next: (tags) => {
+        this.tags = tags;
+        this.updatePagination();
+      },
+      error: () => {
+        this.message = 'Error al cargar los tags';
+      }
     });
   }
 
-  getTagById(id: number): void {
-    this.tagService.getById(id).subscribe({
-      next: (tag) => this.tagForm.patchValue(tag),
-      error: (err) => console.error('Error fetching tag:', err)
-    });
+  // Paginación
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.tags.length / this.itemsPerPage);
+    this.updatePaginatedTags();
   }
 
-  createTag(): void {
-    if (this.tagForm.valid) {
-      this.tagService.create(this.tagForm.value).subscribe({
-        next: (newTag) => {
-          this.tags.push(newTag);
-          this.tagForm.reset();
-        },
-        error: (err) => console.error('Error creating tag:', err)
-      });
+  updatePaginatedTags(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedTags = this.tags.slice(start, end);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedTags();
     }
   }
 
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedTags();
+    }
+  }
+
+  openCreateForm(): void {
+    this.selectedTag = null;
+    this.tagForm.reset();
+    this.showForm = true;
+    this.message = null;
+  }
+
+  clearForm(): void {
+    this.tagForm.reset();
+    this.selectedTag = null;
+    this.showForm = false;
+    this.message = null;
+  }
+
+  onSubmit(): void {
+    if (this.tagForm.valid) {
+      this.selectedTag ? this.updateTag() : this.createTag();
+    }
+  }
+
+  createTag(): void {
+    this.tagService.create(this.tagForm.value).subscribe({
+      next: (newTag) => {
+        this.tags.push(newTag);
+        this.message = 'Tag creado exitosamente';
+        this.updatePagination();
+        this.clearForm();
+      },
+      error: () => this.message = 'Error al crear el tag'
+    });
+  }
+
   updateTag(): void {
-    if (this.tagForm.valid && this.tagForm.value.id_tag) {
-      this.tagService.update(this.tagForm.value.id_tag, this.tagForm.value).subscribe({
+    if (this.selectedTag) {
+      this.tagService.update(this.selectedTag.id_tag, this.tagForm.value).subscribe({
         next: (updatedTag) => {
           const index = this.tags.findIndex(tag => tag.id_tag === updatedTag.id_tag);
           if (index !== -1) {
             this.tags[index] = updatedTag;
           }
-          this.tagForm.reset();
+          this.message = 'Tag actualizado exitosamente';
+          this.updatePagination();
+          this.clearForm();
         },
-        error: (err) => console.error('Error updating tag:', err)
+        error: () => this.message = 'Error al actualizar el tag'
       });
     }
   }
 
   deleteTag(id: number): void {
     this.tagService.delete(id).subscribe({
-      next: () => this.tags = this.tags.filter(tag => tag.id_tag !== id),
-      error: (err) => console.error('Error deleting tag:', err)
+      next: () => {
+        this.tags = this.tags.filter(tag => tag.id_tag !== id);
+        this.message = 'Tag eliminado exitosamente';
+        this.updatePagination();
+      },
+      error: () => this.message = 'Error al eliminar el tag'
     });
   }
 
-  clearForm(): void {
-    this.tagForm.reset();
-  }
-
   editTag(tag: Tag): void {
+    this.selectedTag = tag;
     this.tagForm.patchValue(tag);
+    this.showForm = true;
   }
 }

@@ -1,15 +1,8 @@
 export interface TaskList {
-    id_task_list: number,
-    id_asset_type: number,
-    id_task_type: number,
-    step_1: number,
-    step_2 : number,
-    step_3: number,
-    step_4: number,
-    step_5: number,
-    step_6: number,
-    step_7: number,
-    step_8: number,
-    step_9: number,
-    step_10: number
+    id_task_list: number;
+    asset_type_name: string;  // Cambiado a asset_type_name
+    task_type_name: string;   // Cambiado a task_type_name
+    id_asset_type: number;
+    id_task_type: number;
+    [key: `step_${number}`]: string | number;
 }

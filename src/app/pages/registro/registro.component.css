@@ -32,7 +32,8 @@
   margin-bottom: 0.5rem;
 }
 
-.inputStyle {
+.inputStyle,
+select.inputStyle {
   width: 100%;
   padding: 0.5rem;
   background-color: #000000;
@@ -41,7 +42,8 @@
   border-radius: 0.25rem;
 }
 
-.inputStyle::placeholder {
+.inputStyle::placeholder,
+select.inputStyle option {
   color: #aaa;
 }
 
