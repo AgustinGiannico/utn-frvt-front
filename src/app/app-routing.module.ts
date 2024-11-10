@@ -18,6 +18,7 @@ import { TaskTypeComponent } from './components/task-type/task-type.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { OtComponent } from './components/ot/ot.component';
 import { CrearOrdenComponent } from './components/crear-orden/crear-orden.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
   },
   { 
     path: 'gestion-ordenes', 

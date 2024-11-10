@@ -10,6 +10,7 @@ export interface Ot {
     id_priority: number;
     id_ot_state: number;
     id_tag: number;
+    id_task_type: number;
     username?: string;        
     task_list_steps?: string;
     priority?: string;   

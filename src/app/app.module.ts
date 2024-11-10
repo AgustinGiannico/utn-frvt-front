@@ -26,6 +26,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskTypeComponent } from './components/task-type/task-type.component';
 import { OtComponent } from './components/ot/ot.component';
 import { CrearOrdenComponent } from './components/crear-orden/crear-orden.component';
+import { LogoutComponent } from './components/logout/logout.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -46,7 +47,8 @@ import { CrearOrdenComponent } from './components/crear-orden/crear-orden.compon
     TaskListComponent,
     TaskTypeComponent,
     OtComponent,
-    CrearOrdenComponent
+    CrearOrdenComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
