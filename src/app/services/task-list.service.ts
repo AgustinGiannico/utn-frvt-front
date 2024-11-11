@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TaskList } from '../interfaces/task-list';
 import { API_BASE_URL } from '../app.config';
@@ -7,7 +7,6 @@ import { API_BASE_URL } from '../app.config';
 @Injectable({
   providedIn: 'root',
 })
-
 export class TaskListService {
   private apiUrl = `${API_BASE_URL}/task-list`;
 
@@ -33,3 +32,4 @@ export class TaskListService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 }
+
